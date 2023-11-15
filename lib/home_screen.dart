@@ -19,10 +19,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Product> products = [
-    Product('Ayam Geprek', 20.0000),
-    Product('Nasi Goreng', 15.0000),
-    Product('Rendang', 15.0000),
-    Product('Daging Sapi', 25.0000),
+    Product('Ayam Geprek', 20.000),
+    Product('Nasi Goreng', 15.000),
+    Product('Rendang', 15.000),
+    Product('Daging Sapi', 25.000),
     // Add other initial products as needed
   ];
 
@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       Text(
-                        'Rp. ${products[index].price.toStringAsFixed(2)}',
+                        'Rp. ${products[index].price.toStringAsFixed(3)}',
                         style: const TextStyle(
                           color: Colors.grey,
                         ),
