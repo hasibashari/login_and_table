@@ -1,6 +1,13 @@
 // home_screen.dart
 import 'package:flutter/material.dart';
 
+class Product {
+  final String name;
+  final double price;
+
+  Product(this.name, this.price);
+}
+
 class HomeScreen extends StatefulWidget {
   final String userEmail;
 
@@ -11,11 +18,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<String> products = [
-    'Product 1',
-    'Product 2',
-    'Product 3',
-    // Add initial products as needed
+  List<Product> products = [
+    Product('Ayam Geprek', 20.0000),
+    Product('Nasi Goreng', 15.0000),
+    Product('Rendang', 15.0000),
+    Product('Daging Sapi', 25.0000),
+    // Add other initial products as needed
   ];
 
   @override
@@ -36,7 +44,23 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: products.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(products[index]),
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        products[index].name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        'Rp. ${products[index].price.toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: () {
@@ -61,20 +85,36 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _showAddProductDialog(BuildContext context) async {
-    String newProduct = '';
+    String newProductName = '';
+    double newProductPrice = 0.0;
 
     return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Add New Product'),
-          content: TextField(
-            onChanged: (value) {
-              newProduct = value;
-            },
-            decoration: const InputDecoration(
-              hintText: 'Enter product name',
-            ),
+          content: Column(
+            children: [
+              TextField(
+                onChanged: (value) {
+                  newProductName = value;
+                },
+                decoration: const InputDecoration(
+                  hintText: 'Enter product name',
+                ),
+              ),
+              TextField(
+                onChanged: (value) {
+                  // Parse the entered value as a double
+                  newProductPrice = double.tryParse(value) ?? 0.0;
+                },
+                decoration: const InputDecoration(
+                  hintText: 'Enter product price',
+                ),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+              ),
+            ],
           ),
           actions: [
             TextButton(
@@ -86,8 +126,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ElevatedButton(
               onPressed: () {
                 setState(() {
-                  if (newProduct.isNotEmpty) {
-                    products.add(newProduct);
+                  if (newProductName.isNotEmpty) {
+                    products.add(Product(newProductName, newProductPrice));
                   }
                 });
                 Navigator.of(context).pop();
